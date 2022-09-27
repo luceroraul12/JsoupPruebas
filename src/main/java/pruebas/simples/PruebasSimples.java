@@ -30,7 +30,6 @@ public class PruebasSimples {
                             if (linea.contains("var data =")){
                                 //sabiendo que la linea es var data = [arreglo], solo quiero obtener la informacion despues del igual, asi que uso split y divido en funcion de ese simbolo
                                 String resultadoCasiArreglo = linea.split("=")[1];
-                                resultadoCasiArreglo.
                             }
                         }
                     }
