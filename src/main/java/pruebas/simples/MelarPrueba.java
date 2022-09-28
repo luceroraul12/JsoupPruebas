@@ -61,7 +61,8 @@ public class MelarPrueba {
                                     System.out.println(matLinea.group(2));
                                     resultado = matLinea.group(2);
                                 }
-                                producto.add(resultado);
+                                ;
+                                producto.add(resultado.replaceAll("\\ +$",""));
 
                             }
                             arregloProductos.add(producto.stream().toList());
