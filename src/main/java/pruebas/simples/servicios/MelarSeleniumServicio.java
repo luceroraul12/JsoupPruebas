@@ -22,8 +22,10 @@ public class MelarSeleniumServicio extends ScrapperTablaAbstract {
         System.setProperty("webdriver.edge.driver","C:\\selenium\\msedgedriver.exe");
         WebDriver driver = new EdgeDriver();
         driver.get(getUrlBuscador());
+        String template = driver.getPageSource();
+        driver.close();
 
-        return Jsoup.parse(driver.getPageSource());
+        return Jsoup.parse(template);
     }
 
     @Override
@@ -39,7 +41,6 @@ public class MelarSeleniumServicio extends ScrapperTablaAbstract {
 
 
         productos.forEach(p -> {
-            System.out.println();
             Elements partes = p.getElementsByTag("td");
             renglon.clear();
             partes.forEach(td -> {
@@ -64,16 +65,7 @@ public class MelarSeleniumServicio extends ScrapperTablaAbstract {
                 precioGranel = 0.0;
             }
 
-            System.out.println(MelarEntidad.builder()
-                    .codigo(renglon.get(0))
-                    .producto(renglon.get(1))
-                    .fraccion(renglon.get(2))
-                    .granel(renglon.get(3))
-                    .origen(renglon.get(4))
-                    .medida(renglon.get(5))
-                    .precioFraccionado(precioFraccionado)
-                    .precioGranel(precioGranel)
-                    .build());
+
 
             agregarProducto(MelarEntidad.builder()
                     .codigo(renglon.get(0))
