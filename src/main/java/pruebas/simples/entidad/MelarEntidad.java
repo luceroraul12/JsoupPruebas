@@ -10,9 +10,16 @@ import lombok.ToString;
 @Builder
 @ToString
 public class MelarEntidad {
+    private String codigo;
     private String producto;
+    private String fraccion;
+    private String granel;
+    private String origen;
+    private String medida;
     //son precios que no tienen en cuenta el iva
     private Double precioFraccionado;
     private Double precioGranel;
+
+
 
 }
