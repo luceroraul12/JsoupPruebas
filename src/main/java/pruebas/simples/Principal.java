@@ -1,6 +1,7 @@
 package pruebas.simples;
 
 import pruebas.simples.servicios.LaGranjaDelCentroServicio;
+import pruebas.simples.servicios.MelarSeleniumServicio;
 import pruebas.simples.servicios.MelarServicio;
 import pruebas.simples.servicios.SudamerikServicio;
 
@@ -18,9 +19,14 @@ public class Principal {
 //        LaGranjaDelCentroServicio granjaServicio = new LaGranjaDelCentroServicio();
 //        granjaServicio.getProductosRecolectados().forEach(System.out::println);
 
-            //voy a probar Melar nuevamente
-        MelarServicio melarServicio = new MelarServicio();
-        melarServicio.getProductos().forEach(System.out::println);
+//            //voy a probar Melar nuevamente
+//        MelarServicio melarServicio = new MelarServicio();
+//        melarServicio.getProductos().forEach(System.out::println);
+
+        //voy a probar Melar con Selenium;
+        MelarSeleniumServicio melarSeleniumServicio = new MelarSeleniumServicio();
+        melarSeleniumServicio.getProductosRecolectados().forEach(System.out::println);
+
 
     }
 }
