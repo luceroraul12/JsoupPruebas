@@ -34,26 +34,6 @@ public class LaGranjaDelCentro {
         }
 
 
-//        while(true){
-//
-//
-//            Document doc = Jsoup.connect(siguienteUrl).get();
-//
-//            System.out.printf("title: %s\n", doc.title());
-//
-//            Elements productos = doc.getElementsByClass("productos-container");
-//
-//            productos.forEach( producto -> {
-//                String nombre = producto.getElementsByClass("nombre").text();
-//                String precio = producto.getElementsByClass("precio").text();
-//                System.out.println(nombre + " - " + precio);
-//            });
-//
-//            contador++;
-//            siguienteUrl = adaptarUrl(url, contador);
-//
-//
-//        }
 
 
 
