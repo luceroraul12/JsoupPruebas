@@ -1,6 +1,13 @@
 package pruebas.simples.entidad;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
+@Builder
 public class LaGranjaDelCentroEntidad {
-    private String nombre;
-    private Long precio;
+    private String nombreProducto;
+    private Double precio;
 }
