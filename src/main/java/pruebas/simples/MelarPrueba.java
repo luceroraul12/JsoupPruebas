@@ -40,7 +40,6 @@ public class MelarPrueba {
 //        Obtengo renglones de tablas que no contengan la clase group que es la categoria de los productos y no un producto en sí
         Elements renglonesDeProductos = tablas.select("table > tbody > tr:not(.group)");
 
-        Formatter formato = new Formatter();
         List<String> renglon = new ArrayList<>();
 
 
