@@ -1,5 +1,7 @@
 package pruebas.simples.servicios;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -8,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public abstract class ScrapperTablaAbstract<Entidad> {
 
     private String clasesTabla;
@@ -23,8 +27,8 @@ public abstract class ScrapperTablaAbstract<Entidad> {
     private void recolectarProductos() throws IOException {
         reiniciar();
         while (this.contadorPaginasVacias <= 2){
-            Document document = Jsoup.connect(generarSiguienteUrl()).get();
-            Elements productos = document.getElementsByClass(clasesTabla);
+            Document document = generarDocument();
+            Elements productos = generarElementosProductos(document);
             if (productos.size() == 0){
                 contadorPaginasVacias++;
             }
@@ -34,6 +38,14 @@ public abstract class ScrapperTablaAbstract<Entidad> {
 
         }
 
+    }
+
+    protected Elements generarElementosProductos(Document doc){
+        return doc.getElementsByClass(clasesTabla);
+    }
+
+    protected Document generarDocument() throws IOException {
+        return Jsoup.connect(generarSiguienteUrl()).get();
     }
 
     protected abstract void trabajarProductos(Elements productos);
@@ -59,31 +71,4 @@ public abstract class ScrapperTablaAbstract<Entidad> {
         return this.productosRecolectados;
     }
 
-    public void setClasesTabla(String clasesTabla) {
-        this.clasesTabla = clasesTabla;
-    }
-
-    public void setClasesNombreProducto(String clasesNombreProducto) {
-        this.clasesNombreProducto = clasesNombreProducto;
-    }
-
-    public void setClasesPrecio(String clasesPrecio) {
-        this.clasesPrecio = clasesPrecio;
-    }
-
-    public void setUrlBuscador(String urlBuscador) {
-        this.urlBuscador = urlBuscador;
-    }
-
-    public String getClasesTabla() {
-        return this.clasesTabla;
-    }
-
-    public String getClasesNombreProducto() {
-        return this.clasesNombreProducto;
-    }
-
-    public String getClasesPrecio() {
-        return this.clasesPrecio;
-    }
 }
