@@ -1,7 +1,18 @@
 package pruebas.simples.entidad;
 
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@Builder
 public class SudamerikEntidad {
-    private String nombre;
-    private Integer unidades;
-    private Long precio;
+    private String nombreProducto;
+    private String cantidadEspecifca;
+    private Double precio;
+
 }
