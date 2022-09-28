@@ -4,11 +4,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import pruebas.simples.entidad.MelarEntidad;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Formatter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,66 +26,67 @@ public class MelarPrueba {
         List<MelarEntidad> arreglosConvertidos = new ArrayList<>();
         List<String> producto = new ArrayList<>();
 
-        Document doc = Jsoup.connect("https://listadepreciosmelar.com.ar").get();
+        System.setProperty("webdriver.edge.driver","C:\\selenium\\msedgedriver.exe");
+        WebDriver driver = new EdgeDriver();
+        driver.get("https://listadepreciosmelar.com.ar");
+
+        Document doc = Jsoup.parse(driver.getPageSource());
+        driver.close();
 
         System.out.printf("title: %s\n", doc.title());
 
-        Elements soloScripts = doc.getElementsByTag("script");
+//        Obtengo tablas
+        Elements tablas = doc.getElementsByTag("table");
+//        Obtengo renglones de tablas que no contengan la clase group que es la categoria de los productos y no un producto en sí
+        Elements renglonesDeProductos = tablas.select("table > tbody > tr:not(.group)");
 
-        for (Element script: soloScripts){
-            //obtengo el script que contiene la data
-            if (script.toString().contains("var data =")){
-
-                //divido por los finales de linea con ;
-                String[] divididoPorPuntoComa = script.toString().split(";");
-
-                Arrays.stream(divididoPorPuntoComa).toList().forEach( linea -> {
-                    //identifico linea que tiene la variable data
-                    if (linea.contains("var data")){
-                        //obtengo arreglo en forma de string
-                        System.out.println(linea);
-                        Pattern p = Pattern.compile("\\[(.*?)\\]");
-                        Matcher m = p.matcher(linea);
-                        //trabajando una objeto
-                        while (m.find()){
-                            producto.clear();
-                            System.out.println(m.group(1));
-                            Pattern patLinea = Pattern.compile("\\\"(.+?)\\\"|(\\d+\\.?\\d+)");
-                            Matcher matLinea = patLinea.matcher(m.group(1));
-                            //busco los elementos del objeto
-
-                            while (matLinea.find()){
-                                //solo tomo los valores no nulos, debido a que hay muchisimos nulos, no tengo idea del por que
-                                String resultado = "";
-
-                                if (matLinea.group(1) != null){
-                                    System.out.println(matLinea.group(1));
-                                    resultado = matLinea.group(1);
-                                } else {
-                                    System.out.println(matLinea.group(2));
-                                    resultado = matLinea.group(2);
-                                }
-                                ;
-                                producto.add(resultado.replaceAll("\\ +$",""));
-
-                            }
-                            arregloProductos.add(producto.stream().toList());
-                        }
-
-                    }
-                });
+        Formatter formato = new Formatter();
+        List<String> renglon = new ArrayList<>();
 
 
-                arregloProductos.forEach(p -> {
-                    arreglosConvertidos.add(convertirStringToMelar(p));
-                });
 
-                arreglosConvertidos.forEach(System.out::println);
+        renglonesDeProductos.forEach(p -> {
+            System.out.println();
+            Elements partes = p.getElementsByTag("td");
+            renglon.clear();
+            partes.forEach(td -> {
+                renglon.add(td.text());
+            });
+            double precioFraccionado;
+            double precioGranel;
 
+            try{
+                precioFraccionado = Double.parseDouble(renglon.get(6)
+                        .replaceAll("\\.","")
+                        .replaceAll(",","."));
+            } catch (Exception e){
+                precioFraccionado = 0.0;
             }
-        }
+
+            try{
+                precioGranel = Double.parseDouble(renglon.get(7)
+                        .replaceAll("\\.","")
+                        .replaceAll(",","."));
+            } catch (Exception e){
+                precioGranel = 0.0;
+            }
+
+            arreglosConvertidos.add(MelarEntidad.builder()
+                    .codigo(renglon.get(0))
+                    .producto(renglon.get(1))
+                    .fraccion(renglon.get(2))
+                    .granel(renglon.get(3))
+                    .origen(renglon.get(4))
+                    .medida(renglon.get(5))
+                    .precioFraccionado(precioFraccionado)
+                    .precioGranel(precioGranel)
+                    .build());
+        });
+
+        arreglosConvertidos.forEach(System.out::println);
 
     }
+
 
 
     private static MelarEntidad convertirStringToMelar(List<String> producto){
