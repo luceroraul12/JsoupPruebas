@@ -86,20 +86,28 @@ public class MelarPrueba {
 
     private static MelarEntidad convertirStringToMelar(List<String> producto){
         int tamaño = producto.size();
-        MelarEntidad pConvertido = new MelarEntidad();
-        pConvertido.setProducto(producto.get(2));
+        double precioFraccionado = 0.0;
+        double precioGranel = 0.0;
+        String nombre = producto.get(2);
         try {
-            pConvertido.setPrecioFraccionado(Double.valueOf(producto.get(tamaño-2)));
+            precioFraccionado = Double.parseDouble(producto.get(tamaño-2));
         } catch (Exception e) {
-            pConvertido.setPrecioFraccionado(0.0);
+            precioFraccionado = 0.0;
         }
         try {
-            pConvertido.setPrecioGranel(Double.valueOf(producto.get(tamaño-1)));
+            precioGranel = Double.parseDouble(producto.get(tamaño-1));
         } catch (Exception e){
-            pConvertido.setPrecioGranel(0.0);
+            precioGranel = 0.0;
         }
 
-        return pConvertido;
+
+
+        return MelarEntidad
+                .builder()
+                .producto(nombre)
+                .precioFraccionado(precioFraccionado)
+                .precioGranel(precioGranel)
+                .build();
     }
 
 
