@@ -9,6 +9,6 @@ public class FacundoEntidad {
     private String categoria;
     private String subcategoria;
     private String cantidad;
-    private Double precioMenor;
     private Double precioMayor;
+    private Double precioMenor;
 }
