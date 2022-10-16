@@ -34,7 +34,11 @@ public class Principal {
 
 
 
-        IndiasServicio indiasServicio = new IndiasServicio();
-        indiasServicio.mostrarExcel();
+//        IndiasServicio indiasServicio = new IndiasServicio();
+//        indiasServicio.mostrarExcel();
+
+
+        PruebaServicio pruebaServicio = new PruebaServicio();
+        pruebaServicio.mostrarExcel();
     }
 }
